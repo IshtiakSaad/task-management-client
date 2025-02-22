@@ -17,8 +17,7 @@ export const AuthProvider = ({ children }) => {
           displayName: currentUser.displayName,
         };
 
-        // ✅ Send user data to backend on login
-        await axios.post("http://localhost:3000/api/users", userData).catch(console.error);
+        await axios.post("https://task-management-server-delta-fawn.vercel.app/api/users", userData).catch(console.error);
       }
       setUser(currentUser);
     });

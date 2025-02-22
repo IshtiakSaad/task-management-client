@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/tasks"; // Adjust for deployment
+const API_URL = "https://task-management-server-delta-fawn.vercel.app/api/tasks"; // Adjust for deployment
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -12,7 +12,7 @@ const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
 
-  // ✅ Redirect if user is not logged in
+  // Redirect if user is not logged in
   if (!user) {
     return (
       <p className="text-center mt-10 text-white">
@@ -21,7 +21,7 @@ const Dashboard = () => {
     );
   }
 
-  // ✅ Fetch tasks for the logged-in user
+  // Fetch tasks for the logged-in user
   useEffect(() => {
     axios
       .get(`${API_URL}/${user.uid}`)
@@ -35,7 +35,7 @@ const Dashboard = () => {
       .catch((error) => console.error("Failed to fetch tasks:", error));
   }, [user]);
 
-  // ✅ Add a new task
+  // Add a new task
   const addTask = async () => {
     if (newTask.title.trim() !== "") {
       try {
@@ -54,7 +54,7 @@ const Dashboard = () => {
     }
   };
 
-  // ✅ Delete a task
+  // Delete a task
   const deleteTask = async (id, category) => {
     try {
       await axios.delete(`${API_URL}/${id}`);
@@ -67,7 +67,7 @@ const Dashboard = () => {
     }
   };
 
-  // ✅ Edit task
+  // Edit task
   const startEditing = (task) => {
     setEditingTask(task);
     setNewTask({ title: task.title, description: task.description });
@@ -102,7 +102,7 @@ const Dashboard = () => {
     }
   };
 
-  // ✅ Drag-and-drop functionality (Reorder & Update Backend)
+  // Drag-and-drop functionality (Reorder & Update Backend)
   const onDragEnd = async (result) => {
     if (!result.destination) return;
 
