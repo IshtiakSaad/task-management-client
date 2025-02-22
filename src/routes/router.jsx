@@ -2,12 +2,14 @@ import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
 import Auth from "../components/Auth";
 import MainLayout from "../pages/MainLayout";
+import ProtectedRoute from "../components/ProtectedRoute";
+import ErrorPage from "../pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    errorElement: <h2>Error 404!</h2>,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -15,7 +17,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <Dashboard />,
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

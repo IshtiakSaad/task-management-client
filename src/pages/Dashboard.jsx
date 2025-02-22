@@ -14,7 +14,7 @@ const Dashboard = () => {
 
   // ✅ Redirect if user is not logged in
   if (!user) {
-    return <p className="text-center mt-10">Please log in to access your tasks.</p>;
+    return <p className="text-center mt-10 text-white">Please log in to access your tasks.</p>;
   }
 
   // ✅ Fetch tasks for the logged-in user
@@ -99,29 +99,29 @@ const Dashboard = () => {
   // ✅ Drag-and-drop functionality (Reorder & Update Backend)
   const onDragEnd = async (result) => {
     if (!result.destination) return;
-  
+
     const { source, destination } = result;
-  
+
     // Prevent direct state mutation by creating deep copies
     const newTasks = { ...tasks, 
       [source.droppableId]: [...tasks[source.droppableId]], 
       [destination.droppableId]: [...tasks[destination.droppableId]] 
     };
-  
+
     // Remove the dragged task from the source list
     const [movedTask] = newTasks[source.droppableId].splice(source.index, 1);
-  
+
     // Assign new category only if it's moved to a different category
     if (source.droppableId !== destination.droppableId) {
       movedTask.category = destination.droppableId;
     }
-  
+
     // Insert the task in the destination list at the new position
     newTasks[destination.droppableId].splice(destination.index, 0, movedTask);
-  
+
     // Update state to reflect changes
     setTasks(newTasks);
-  
+
     // Update backend only if category actually changed
     if (source.droppableId !== destination.droppableId) {
       try {
@@ -135,14 +135,13 @@ const Dashboard = () => {
       }
     }
   };
-  
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Task Management</h2>
+    <div className="min-h-screen bg-gray-900 text-white p-8">
+      <h2 className="text-3xl font-bold mb-6">Task Management</h2>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
+        className="bg-blue-600 text-white px-4 py-2 rounded-md mb-4 hover:bg-blue-700 transition"
       >
         + Add Task
       </button>
@@ -155,15 +154,9 @@ const Dashboard = () => {
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className="bg-white p-4 rounded-lg shadow-md min-h-[300px]"
+                  className="bg-gray-800 p-4 rounded-lg shadow-lg min-h-[300px]"
                 >
-                  <h3 className="text-lg font-semibold mb-4 text-gray-700">
-                    {category === "todo"
-                      ? "To Do"
-                      : category === "inProgress"
-                      ? "In Progress"
-                      : "Done"}
-                  </h3>
+                  <h3 className="text-lg font-semibold mb-4">{category === "todo" ? "To Do" : category === "inProgress" ? "In Progress" : "Done"}</h3>
                   {tasks[category].map((task, index) => (
                     <Draggable key={task._id} draggableId={task._id} index={index}>
                       {(provided) => (
@@ -171,7 +164,7 @@ const Dashboard = () => {
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          className="bg-blue-100 text-blue-900 p-3 rounded-md shadow-md mb-3 flex flex-col"
+                          className="bg-gray-700 text-white p-3 rounded-md shadow-md mb-3 flex flex-col hover:bg-gray-600 transition"
                         >
                           <div className="flex justify-between items-center">
                             <span className="font-semibold">{task.title}</span>
@@ -190,8 +183,8 @@ const Dashboard = () => {
                               </button>
                             </div>
                           </div>
-                          {task.description && <p className="text-sm text-gray-600">{task.description}</p>}
-                          <p className="text-xs text-gray-500">
+                          {task.description && <p className="text-sm">{task.description}</p>}
+                          <p className="text-xs text-gray-400">
                             Created: {new Date(task.createdAt).toLocaleString()}
                           </p>
                         </div>
@@ -207,23 +200,23 @@ const Dashboard = () => {
       </DragDropContext>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg">
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center">
+          <div className="bg-gray-800 p-6 rounded-lg">
             <h3 className="text-lg font-bold">{editingTask ? "Edit Task" : "Add Task"}</h3>
             <input
               type="text"
-              className="border p-2 w-full mt-2"
-              placeholder="Task title (max 50 chars)"
+              className="border bg-gray-600 text-white p-2 w-full mt-2 rounded-md"
+              placeholder="Task title"
               value={newTask.title}
               onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
             />
             <textarea
-              className="border p-2 w-full mt-2"
-              placeholder="Task description (optional, max 200 chars)"
+              className="border bg-gray-600 text-white p-2 w-full mt-2 rounded-md"
+              placeholder="Task description"
               value={newTask.description}
               onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
             />
-            <button onClick={() => (editingTask ? updateTask() : addTask())} className="bg-green-500 text-white px-4 py-2 rounded-md mt-4">
+            <button onClick={() => (editingTask ? updateTask() : addTask())} className="bg-green-600 text-white px-4 py-2 rounded-md mt-4 hover:bg-green-700 transition">
               {editingTask ? "Update" : "Add"}
             </button>
           </div>
