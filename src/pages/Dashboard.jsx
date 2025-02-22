@@ -147,7 +147,7 @@ const Dashboard = () => {
       </button>
 
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-6">
           {["todo", "inProgress", "done"].map((category) => (
             <Droppable droppableId={category} key={category}>
               {(provided) => (
