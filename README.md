@@ -2,7 +2,7 @@
 A simple and efficient task management application built with **React**, **Firebase Authentication**, and **Drag & Drop** functionality for seamless task organization.  
 
 ## 🚀 **Live Demo**  
-🔗 [Live Site](#) *(Replace with actual URL once deployed)*  
+🔗 [Live Site](https://task-management-999.web.app/) 
 
 ## 📦 **Dependencies**  
 This project uses the following dependencies:  

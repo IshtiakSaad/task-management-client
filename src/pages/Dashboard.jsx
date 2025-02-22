@@ -14,7 +14,11 @@ const Dashboard = () => {
 
   // ✅ Redirect if user is not logged in
   if (!user) {
-    return <p className="text-center mt-10 text-white">Please log in to access your tasks.</p>;
+    return (
+      <p className="text-center mt-10 text-white">
+        Please log in to access your tasks.
+      </p>
+    );
   }
 
   // ✅ Fetch tasks for the logged-in user
@@ -81,7 +85,9 @@ const Dashboard = () => {
 
         setTasks((prev) => {
           const updatedTasks = { ...prev };
-          updatedTasks[editingTask.category] = updatedTasks[editingTask.category].map((task) =>
+          updatedTasks[editingTask.category] = updatedTasks[
+            editingTask.category
+          ].map((task) =>
             task._id === editingTask._id ? response.data : task
           );
           return updatedTasks;
@@ -103,9 +109,10 @@ const Dashboard = () => {
     const { source, destination } = result;
 
     // Prevent direct state mutation by creating deep copies
-    const newTasks = { ...tasks, 
-      [source.droppableId]: [...tasks[source.droppableId]], 
-      [destination.droppableId]: [...tasks[destination.droppableId]] 
+    const newTasks = {
+      ...tasks,
+      [source.droppableId]: [...tasks[source.droppableId]],
+      [destination.droppableId]: [...tasks[destination.droppableId]],
     };
 
     // Remove the dragged task from the source list
@@ -138,10 +145,10 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
-      <h2 className="text-3xl font-bold mb-6">Task Management</h2>
+      <h2 className="text-3xl font-bold mb-6">Build Your Second Brain</h2>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="bg-blue-600 text-white px-4 py-2 rounded-md mb-4 hover:bg-blue-700 transition"
+        className="bg-yellow-500 text-white px-4 py-2 rounded-md mb-4 hover:bg-blue-700 transition"
       >
         + Add Task
       </button>
@@ -156,9 +163,19 @@ const Dashboard = () => {
                   {...provided.droppableProps}
                   className="bg-gray-800 p-4 rounded-lg shadow-lg min-h-[300px]"
                 >
-                  <h3 className="text-lg font-semibold mb-4">{category === "todo" ? "To Do" : category === "inProgress" ? "In Progress" : "Done"}</h3>
+                  <h3 className="text-lg font-semibold mb-4">
+                    {category === "todo"
+                      ? "To Do"
+                      : category === "inProgress"
+                      ? "In Progress"
+                      : "Done"}
+                  </h3>
                   {tasks[category].map((task, index) => (
-                    <Draggable key={task._id} draggableId={task._id} index={index}>
+                    <Draggable
+                      key={task._id}
+                      draggableId={task._id}
+                      index={index}
+                    >
                       {(provided) => (
                         <div
                           ref={provided.innerRef}
@@ -183,7 +200,9 @@ const Dashboard = () => {
                               </button>
                             </div>
                           </div>
-                          {task.description && <p className="text-sm">{task.description}</p>}
+                          {task.description && (
+                            <p className="text-sm">{task.description}</p>
+                          )}
                           <p className="text-xs text-gray-400">
                             Created: {new Date(task.createdAt).toLocaleString()}
                           </p>
@@ -201,22 +220,42 @@ const Dashboard = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center">
-          <div className="bg-gray-800 p-6 rounded-lg">
-            <h3 className="text-lg font-bold">{editingTask ? "Edit Task" : "Add Task"}</h3>
+          <div className="bg-gray-800 p-6 rounded-lg relative w-96">
+            {/* Close Button */}
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-2 right-2 text-white text-xl hover:text-red-500 transition"
+            >
+              ✖
+            </button>
+
+            <h3 className="text-lg font-bold text-white">
+              {editingTask ? "Edit Task" : "Add Task"}
+            </h3>
+
             <input
               type="text"
               className="border bg-gray-600 text-white p-2 w-full mt-2 rounded-md"
               placeholder="Task title"
               value={newTask.title}
-              onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+              onChange={(e) =>
+                setNewTask({ ...newTask, title: e.target.value })
+              }
             />
+
             <textarea
               className="border bg-gray-600 text-white p-2 w-full mt-2 rounded-md"
               placeholder="Task description"
               value={newTask.description}
-              onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+              onChange={(e) =>
+                setNewTask({ ...newTask, description: e.target.value })
+              }
             />
-            <button onClick={() => (editingTask ? updateTask() : addTask())} className="bg-green-600 text-white px-4 py-2 rounded-md mt-4 hover:bg-green-700 transition">
+
+            <button
+              onClick={() => (editingTask ? updateTask() : addTask())}
+              className="bg-green-600 text-white px-4 py-2 rounded-md mt-4 hover:bg-green-700 transition"
+            >
               {editingTask ? "Update" : "Add"}
             </button>
           </div>
